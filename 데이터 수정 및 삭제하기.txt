@@ -1,0 +1,48 @@
+C:\Users\YHI>cd C:\Users\YHI\django_study\projects\first-django
+C:\Users\YHI\django_study\projects\first-django>venv\Scripts\activate
+(venv) C:\Users\YHI\django_study\projects\first-django>python manage.py shell
+
+
+>>> from third.models import Restaurant
+
+# filter()는 데이터에 직접 접근하지 않고 조회만 되지만
+# get()은 실제로 데이터베이스에 접근하여 객체를 끌어온다.
+>>> item = Restaurant.objects.get(pk=1)
+>>> item.name
+'Deli Shop'
+
+
+# 이름을 새로운 값으로 변경해본다.
+>>> item.name = 'My shop'
+>>> item.save()
+>>> item
+<Restaurant: Restaurant object (1)>
+
+# 기존 1번 객체의 이름이 업데이트 된 것을 확인
+>>> Restaurant.objects.filter(id=1).values()
+<QuerySet [{'id': 1, 'name': 'My shop', 'address': 'Gangnam', 'created_at': datetime.datetime(2021, 6, 16, 11, 29, 55, 261212, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 26, 13, 39, 33, 244533, tzinfo=<UTC>)}]>
+
+
+## 수정 시에 save()와 새로운 데이터 생성 시에 save()의 차이를 이해해보기. ##
+
+# None: id값이 존재하지 않는다.
+>>> new_one = Restaurant(name='new_one', address='new_add')
+>>> new_one
+<Restaurant: Restaurant object (None)>
+>>> item
+<Restaurant: Restaurant object (1)>
+
+# 기존 item은 id값 존재
+>>> item.id
+1
+# 저장되지 않은 새로운 객체는 id값이 존재하지 않는다.
+>>> new_one.id
+
+
+# 객체 삭제하기
+>>> item.delete()
+(1, {'third.Restaurant': 1})
+
+# id=1의 객체 삭제된 것을 확인
+>>> Restaurant.objects.all().values()
+<QuerySet [{'id': 2, 'name': 'Korean Food', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>)}, {'id': 3, 'name': 'Sushi', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>)}, {'id': 4, 'name': 'new', 'address': 'new_add', 'created_at': datetime.datetime(2021, 6, 26, 13, 44, 59, 708751, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 26, 13, 44, 59, 708751, tzinfo=<UTC>)}]>

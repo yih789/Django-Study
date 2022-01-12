@@ -1,0 +1,39 @@
+----- < 데이터 조회하기 > -----
+> from third.models import Restaurant
+
+# 모든 객체 Object 형태로 출력
+> Restaurant.objects.all()
+
+# 모든 객체 값과 함께 출력
+> Restaurant.objects.all().values()
+
+# 기본키=1인 객체 가져오기
+# 단순 조회가 아니라 해당 pk의 객체를 db에서 가져오기 때문에 수정도 가능하다.
+> res = Restaurant.objects.get(pk=1)
+> res.name = 'AAA'
+
+----- < 데이터 필터링하기 > -----
+## 해당 조건에 맞는 객체를 가져오긴 하지만 직접 db와 연결된 것은 아니므로
+수정은 불가능하다.
+> res = Restaurant.objects.filter(c1='Korean Food')
+> res.values()
+
+# 해당 조건을 제외하고 가져온다.
+> Restaurant.objects.exclude(c1 = '.....')
+# 체이닝도 가능
+> Restaurant.objects.exclude(c1 = '.....').exclude(c2 = '.....')
+
+
+----- < 페이징하기 > -----
+## 많은 데이터를 10, 20개씩 끊어 보여주는 것
+## 슬라이싱 기법
+> Restaurant.objects.all()[0:n]
+
+
+
+
+
+
+
+
+

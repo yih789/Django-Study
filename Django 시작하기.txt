@@ -1,0 +1,49 @@
+----- < 장고 설치하기 >-----
+
+> mkdir projects
+> cd projects
+
+> pip install virtualenv
+
+> mkdir first-django
+> cd first-django
+
+## venv: 서로 다른 버전간의 충돌 등을 관리
+> virtualenv venv
+> venv\Scripts\activate
+
+# 해당 환경 안에서 django 설치
+> pip install django
+
+----- < 장고 웹 프로젝트 만들기 >-----
+# django 프로젝트 생성
+> django-admin startproject (프로젝트 이름: 'firstdjango') (프로젝트 저장 위치: ' . '[현재위치])
+
+# 서버 실행
+> python manage.py runserver
+
+----- < 장고 웹 앱 만들기 > -----
+# 프로젝트 안의 웹앱 생성하기
+> python manage.py startapp (앱 이름: first)
+# 파이썬 쉘 실행
+>python manage.py shell
+
+---- < URL 맵핑 규칙 > -----
+## url에 파라미터를 함께 전달
+ex) 'select/<int:year>/..... == 'select'/2019/.....
+## re_path(): 복잡한 파라미터 규칙을 사용할 수 있는 정규 표현식을 사용
+
+----- < 템플릿 조건 처리 > -----
+
+import django.shortcuts import render
+> return render(request, 화면으로 출력할 html, 함께 전달하고 싶은 데이터)
+
+----- < 스태틱 파일 띄우기 > -----
+# 아래 내용 포함
+# static 파일 로드: 주로 이미지나 css 파일
+{% load static %}
+
+
+
+
+

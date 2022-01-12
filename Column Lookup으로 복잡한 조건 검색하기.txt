@@ -1,0 +1,52 @@
+C:\Users\YHI>cd C:\Users\YHI\django_study\projects\first-django
+
+C:\Users\YHI\django_study\projects\first-django>venv\Scripts\activate
+
+(venv) C:\Users\YHI\django_study\projects\first-django>python manage.py shell
+
+>>> from third.models import Restaurant
+
+# __axact: name과 동일하다. 정확한 값을 기준으로 데이터 조회
+>>> Restaurant.objects.filter(name='Korean Food')
+<QuerySet [<Restaurant: Restaurant object (2)>]>
+
+>>> Restaurant.objects.filter(name__exact='Korean Food')
+<QuerySet [<Restaurant: Restaurant object (2)>]>
+
+
+# __contains: 해당 값을 포함하는 데이터 조회
+>>> Restaurant.objects.filter(name__contains='Korean').values()
+<QuerySet [{'id': 2, 'name': 'Korean Food', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>)}]>
+>>> Restaurant.objects.filter(name__startwith='Korean').values()
+
+
+# __startswith / __endswith: 해당 값으로 시작하는 또는 끝나는 데이터 조회
+>>> Restaurant.objects.filter(name__startswith='Korean').values()
+<QuerySet [{'id': 2, 'name': 'Korean Food', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>)}]>
+
+>>> Restaurant.objects.filter(name__endswith='Food').values()
+<QuerySet [{'id': 2, 'name': 'Korean Food', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>)}]>
+
+
+# __in: 배열 안의 값을 갖는 데이터 조회
+>>> Restaurant.objects.filter(id__in=[1,3]).values()
+<QuerySet [{'id': 1, 'name': 'Deli Shop', 'address': 'Gangnam', 'created_at': datetime.datetime(2021, 6, 16, 11, 29, 55, 261212, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 29, 55, 261212, tzinfo=<UTC>)}, {'id': 3, 'name': 'Sushi', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>)}]>
+
+>>> Restaurant.objects.filter(id__in=[1,2,3]).values()
+<QuerySet [{'id': 1, 'name': 'Deli Shop', 'address': 'Gangnam', 'created_at': datetime.datetime(2021, 6, 16, 11, 29, 55, 261212, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 29, 55, 261212, tzinfo=<UTC>)}, {'id': 2, 'name': 'Korean Food', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>)}, {'id': 3, 'name': 'Sushi', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>)}]>
+
+
+# __range: (n, m)n과 m사이의 데이터를 모두 조회
+>>> Restaurant.objects.filter(id__range=(1,3)).values()
+<QuerySet [{'id': 1, 'name': 'Deli Shop', 'address': 'Gangnam', 'created_at': datetime.datetime(2021, 6, 16, 11, 29, 55, 261212, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 29, 55, 261212, tzinfo=<UTC>)}, {'id': 2, 'name': 'Korean Food', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>)}, {'id': 3, 'name': 'Sushi', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>)}]>
+
+>>> Restaurant.objects.filter(id__range=(2,3)).values()
+<QuerySet [{'id': 2, 'name': 'Korean Food', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>)}, {'id': 3, 'name': 'Sushi', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>)}]>
+
+
+# __lt, __lte, __gt, __gte: 특정 날짜보다 이전 또는 이후 데이터를 모두 조회 
+>>> Restaurant.objects.filter(created_at__lt='2021-06-06').values()
+<QuerySet []>
+
+>>> Restaurant.objects.filter(created_at__gt='2021-06-06').values()
+<QuerySet [{'id': 1, 'name': 'Deli Shop', 'address': 'Gangnam', 'created_at': datetime.datetime(2021, 6, 16, 11, 29, 55, 261212, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 29, 55, 261212, tzinfo=<UTC>)}, {'id': 2, 'name': 'Korean Food', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 24, 369087, tzinfo=<UTC>)}, {'id': 3, 'name': 'Sushi', 'address': 'Gangbuk', 'created_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>), 'updated_at': datetime.datetime(2021, 6, 16, 11, 30, 36, 192303, tzinfo=<UTC>)}]>
