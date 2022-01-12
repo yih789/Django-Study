@@ -1,0 +1,5 @@
+projects/first-django/*/__pycache__/*
+projects/first-django/*/migrations/*
+. pyc
+.idea/
+venv/
